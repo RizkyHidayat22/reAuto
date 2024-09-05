@@ -24,7 +24,7 @@ export default function Card({ product, onProductUpdate }) {
       window.snap.pay(data.transaction_token, {
         onSuccess: async function () {
           try {
-            await axios.delete(`http://localhost:3000/products/${id}`, {
+            await axios.delete(`https://iproject.rizkyhidayat.dev/products/${id}`, {
               headers: {
                 Authorization: `Bearer ${localStorage.access_token}`,
               },
