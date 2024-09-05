@@ -13,7 +13,7 @@ export default function Login() {
     e.preventDefault();
     try {
       let body = { email, password };
-      const { data } = await axios.post("http://localhost:3000/login", body);
+      const { data } = await axios.post("https://iproject.rizkyhidayat.dev/login", body);
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("role", data.userRole)
       navigate("/home-buyer");
@@ -50,7 +50,7 @@ export default function Login() {
   async function loginGoogle(codeResponse) {
     try {
     //   console.log("ok");
-      const { data } = await axios.post("http://localhost:3000/googleAuth", null, {
+      const { data } = await axios.post("https://iproject.rizkyhidayat.dev/googleAuth", null, {
         headers: {
           token: codeResponse.credential,
         },

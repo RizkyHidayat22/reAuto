@@ -12,7 +12,7 @@ export default function Register() {
     e.preventDefault();
     try {
       const body = { email, password, username };
-      const { data } = await axios.post("http://localhost:3000/register", body);
+      const { data } = await axios.post("https://iproject.rizkyhidayat.dev/register", body);
 
       navigate("/login");
       Toastify({
