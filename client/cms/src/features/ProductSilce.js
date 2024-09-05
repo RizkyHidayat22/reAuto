@@ -35,7 +35,7 @@ const {fetchPanding, fetchSuccess, fetchError} = fetchProduct.actions
 export const fetchAsycProduct = () => async (dispatch) => {
     try {
         dispatch(fetchPanding)
-        const {data} = await axios.get("http://localhost:3000/products/readproduct", {
+        const {data} = await axios.get("https://iproject.rizkyhidayat.dev/readproduct", {
             headers : {
                 Authorization: `Bearer ${localStorage.access_token}`,
             }
