@@ -1,0 +1,24 @@
+[
+    {
+      "name": "Sedan"
+    },
+    {
+      "name": "Hatchback"
+    },
+    {
+      "name": "SUV"
+    },
+    {
+      "name": "MPV"
+    },
+    {
+      "name": "Pickup Truck"
+    },
+    {
+      "name": "Convertible"
+    },
+    {
+      "name": "Electric"
+    }
+  ]
+  
