@@ -42,7 +42,6 @@ class productController {
     }
   }
 
-
   static async readId(req, res, next) {
     try {
       let { id } = req.params;
@@ -57,7 +56,6 @@ class productController {
       next(error);
     }
   }
-
 
   static async deleteProduct(req, res, next) {
     try {
@@ -134,7 +132,7 @@ class productController {
       let snap = new midtransClient.Snap({
         // Set to true if you want Production Environment (accept real transaction).
         isProduction: false,
-        serverKey: "SB-Mid-server-D9B9H27_yZAWwHZ1RG5lQ3Jj",
+        serverKey: process.env.SERVER_KEY,
       });
 
       const orderId = `trx-buy-${generateUniqueOrderId()}`;
@@ -163,8 +161,6 @@ class productController {
       next(err);
     }
   }
-
-  
 }
 
 module.exports = productController;

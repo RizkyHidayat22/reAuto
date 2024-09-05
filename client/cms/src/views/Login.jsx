@@ -49,14 +49,14 @@ export default function Login() {
   }
   async function loginGoogle(codeResponse) {
     try {
-      console.log("ok");
+    //   console.log("ok");
       const { data } = await axios.post("http://localhost:3000/googleAuth", null, {
         headers: {
           token: codeResponse.credential,
         },
       });
 
-      console.log("jjj");
+    //   console.log("jjj");
       localStorage.setItem("access_token", data.access_token);
       navigate("/home-buyer");
     } catch (error) {

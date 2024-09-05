@@ -5,21 +5,10 @@ import {useDispatch, useSelector} from "react-redux"
 import { fetchAsycProduct } from "../features/ProductSilce";
 
 export default function HomeBuyer() {
-//   const [products, setProducts] = useState([]);
+
 const dispact = useDispatch()
 const {reviews, loading, error} = useSelector((state) => state.fetchProduct)
-//   async function fetchData() {
-//     try {
-//       const { data } = await axios.get("http://localhost:3000/products/readproduct", {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.access_token}`,
-//         },
-//       });
-//       setProducts(data.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
+
 
   useEffect(() => {
     dispact(fetchAsycProduct());

@@ -114,7 +114,7 @@ export default function Card({ product, onProductUpdate }) {
               </div>
               <div className="card-actions justify-end">
                 <Link to={`/edit/${product.id}`} className="btn btn-warning">
-                  Edit
+                  Edit Image
                 </Link>
               </div>
             </div>
