@@ -13,40 +13,40 @@ export default function EditImg() {
     formData.append("imageUrl", file);
     try {
       //   console.log(localStorage.access_token);
-      await axios.patch(`http://localhost:3000/products/${id}`, formData, {
+      await axios.patch(`https://iproject.rizkyhidayat.dev/products/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
           "Content-Type": "multipart/from-data",
         },
       });
       navigate("/home-buyer");
-      //   Toastify({
-      //     text: `Succedd add Edit Image`,
-      //     duration: 3000,
-      //     newWindow: true,
-      //     close: true,
-      //     gravity: "bottom", // `top` or `bottom`
-      //     position: "right", // `left`, `center` or `right`
-      //     stopOnFocus: true, // Prevents dismissing of toast on hover
-      //     style: {
-      //       background: "#008000",
-      //     },
-      //     onClick: function () {}, // Callback after click
-      //   }).showToast();
+        Toastify({
+          text: `Succedd add Edit Image`,
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "bottom", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: "#008000",
+          },
+          onClick: function () {}, // Callback after click
+        }).showToast();
     } catch (error) {
-      // Toastify({
-      //     text: error.response.data.message,
-      //     duration: 3000,
-      //     newWindow: true,
-      //     close: true,
-      //     gravity: "bottom", // `top` or `bottom`
-      //     position: "right", // `left`, `center` or `right`
-      //     stopOnFocus: true, // Prevents dismissing of toast on hover
-      //     style: {
-      //       background: "#FF0000",
-      //     },
-      //     onClick: function () {}, // Callback after click
-      //   }).showToast();
+      Toastify({
+          text: error.response.data.message,
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "bottom", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: "#FF0000",
+          },
+          onClick: function () {}, // Callback after click
+        }).showToast();
     }
   }
 

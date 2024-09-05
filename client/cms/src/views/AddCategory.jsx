@@ -12,7 +12,7 @@ export default function AddCategory(){
         e.preventDefault()
         try {
             const body = {name}
-            await axios.post('http://localhost:3000/categories',body,{
+            await axios.post('https://iproject.rizkyhidayat.dev/categories',body,{
                 headers : {
                     Authorization : `Bearer ${localStorage.access_token}`
                 }

@@ -31,7 +31,7 @@ export default function AddCar() {
       if (imageUrl) formData.append("imageUrl", imageUrl);
 
       const body = { brand, model, price, imageUrl, description, kilometer, year, color, transmission, categoryId };
-      await axios.post("http://localhost:3000/products", body, {
+      await axios.post("https://iproject.rizkyhidayat.dev/products", body, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
           "Content-Type": "multipart/form-data",
@@ -45,7 +45,7 @@ export default function AddCar() {
 
   async function handleCategory() {
     try {
-      const { data } = await axios.get(`http://localhost:3000/categories`, {
+      const { data } = await axios.get(`https://iproject.rizkyhidayat.dev/categories`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
