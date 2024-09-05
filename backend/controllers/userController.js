@@ -47,11 +47,12 @@ class UserController {
         email: user.email,
         role: user.role,
       };
-
+      const userRole = payload.role
       const access_token = makeToken(payload);
 
       res.status(200).json({
         access_token,
+        userRole
       });
     } catch (error) {
       next(error);
@@ -60,34 +61,36 @@ class UserController {
 
   static async LoginWithGoogel(req,res, next){
     try {
-      const {token} = req.headers
-      const client = new OAuth2Client()
+      const { token } = req.headers
+            const client = new OAuth2Client();
 
-      const tiket = await client.verifyIdToken({
-        idToken : token,
-        audience : process.env.GOOGLE_APPLICATION_CREDENTIALS
-      })
-      const payload = tiket.getPayload()
-     
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID,
+            });
 
-      const [user, create] = await User.findOrCreate({
-        where : {
-          email : payload.email
-        },
-        default : {
-          email : payload.email,
-          password : "password_google"
-        },
-        hooks: false
-      })
+            const payload = ticket.getPayload();
+            console.log(payload);
+            const [user, created] = await User.findOrCreate({
+                where: {
+                    email: payload.email
+                },
+                defaults: {
+                    username : payload.email,
+                    email: payload.email,
+                    password: "password_google"
+                },
+                hooks: false
+            })
 
-      const access_token = singToken({
-        id : user.id,
-        email : user.email
-      })
+            const access_token = makeToken({
+                id: user.id,
+                email: user.email,
+            })
 
-      res.status(200).json({ access_token})
+            res.status(200).json({ access_token })
     } catch (error) {
+      console.log(error);
       next(error)
     }
   }

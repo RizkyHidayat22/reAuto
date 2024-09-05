@@ -9,7 +9,7 @@ export default function Navbar() {
   }
   return (
     <>
-      <div className="navbar bg-base-100 sticky top-0 z-50 bg-blue-900">
+      <div className="navbar sticky top-0 z-50 bg-blue-900">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -34,7 +34,7 @@ export default function Navbar() {
                 Add Category
               </Link>
             </li>
-          </ul>  
+          </ul>
         </div>
         <div onClick={logout} className="navbar-end flex gap-3">
           <a className="btn  bg-yellow-200">Logout</a>

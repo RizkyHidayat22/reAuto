@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Toastify from "toastify-js";
-// import { GoogleLogin } from "@react-oauth/google";
-
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,6 +15,7 @@ export default function Login() {
       let body = { email, password };
       const { data } = await axios.post("http://localhost:3000/login", body);
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("role", data.userRole)
       navigate("/home-buyer");
       Toastify({
         text: `Succedd Login`,
@@ -46,23 +46,22 @@ export default function Login() {
         onClick: function () {}, // Callback after click
       }).showToast();
     }
+  }
+  async function loginGoogle(codeResponse) {
+    try {
+      console.log("ok");
+      const { data } = await axios.post("http://localhost:3000/googleAuth", null, {
+        headers: {
+          token: codeResponse.credential,
+        },
+      });
 
-    // async function GoogleLogin(codeResponse){
-        
-    //     try {
-    //         const data = await axios.post('http://localhost:3000/googleAuth',{},{
-    //             headers : {
-    //                 token : codeResponse.credential
-    //             }
-    //         })
-    //         localStorage.setItem("access_token", data.access_token);
-    //         navigate("/home-buyer"); 
-
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
+      console.log("jjj");
+      localStorage.setItem("access_token", data.access_token);
+      navigate("/home-buyer");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -118,17 +117,16 @@ export default function Login() {
                       <p className="text-sm font-light text-gray-500 dark:text-gray-400">Don’t have an account yet? Sign up</p>
                     </Link>
                   </div>
-                  {/* <div className="mt-6 flex justify-center items-center">
-                    <GoogleLogin onSuccess={GoogleLogin}/>
-                  </div> */}
+                  <div className="mt-6 flex justify-center items-center">
+                    <GoogleLogin onSuccess={loginGoogle} />
+                  </div>
                 </form>
               </div>
             </div>
           </div>
         </section>
       </div>
-      <div>
-    </div>
+      <div></div>
     </>
   );
 }
