@@ -21,7 +21,7 @@ class UserController {
       });
       res.status(201).json(users); 
     } catch (error) {
-  
+      console.log(error);
       next(error);
     }
   }
@@ -70,7 +70,7 @@ class UserController {
             });
 
             const payload = ticket.getPayload();
-            console.log(payload);
+
             const [user, created] = await User.findOrCreate({
                 where: {
                     email: payload.email
@@ -90,7 +90,7 @@ class UserController {
 
             res.status(200).json({ access_token })
     } catch (error) {
-      console.log(error);
+   
       next(error)
     }
   }

@@ -1,31 +1,31 @@
 const { Op } = require("sequelize");
 const { Product, User } = require("../models");
 const imagekit = require("../utils/imageKit");
-const {v2 : cloudinary} = require('cloudinary')
+const { v2: cloudinary } = require("cloudinary");
+const midtransClient = require("midtrans-client");
+const fetch = require("node-fetch");
+const { generateUniqueOrderId } = require("../helpers/timestamp");
 class productController {
-
   static async handleAdd(req, res, next) {
     try {
-        cloudinary.config({
-            cloud_name : process.env.CLOUDINARY_CLOUD_NAME,
-            api_key : process.env.CLOUDINARY_API_KEY,
-            api_secret : process.env.CLOUDINARY_API_SECRET
-        })
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
 
       let { id } = req.loginInfo;
-        const file = req.file
-        // console.log(req.file);
-        if(!file) throw new Error ('NotFound')
-        const base64 = file.buffer.toString('base64')
-        const output = await cloudinary.uploader.upload(
-            `data:${file.mimetype};base64,${base64}`
-        )
+      const file = req.file;
+      // console.log(req.file);
+      if (!file) throw new Error("NotFound");
+      const base64 = file.buffer.toString("base64");
+      const output = await cloudinary.uploader.upload(`data:${file.mimetype};base64,${base64}`);
       let { brand, model, kilometer, year, transmission, color, categoryId, description, price } = req.body;
       let data = await Product.create({
         brand,
         model,
         kilometer,
-        imageUrl : output.secure_url,
+        imageUrl: output.secure_url,
         year,
         transmission,
         color,
@@ -37,65 +37,11 @@ class productController {
 
       res.status(201).json({ data });
     } catch (error) {
-     console.log(error);
+      console.log(error);
       next(error);
     }
   }
- 
-  static async readData(req, res, next) {
-    try {
-      let { search, sort, filter, page } = req.query;
-      let limit = 10;
-      let pageNUmber = 1;
-      let condition = {
-        where: {},
-        include: {
-          model: User,
-          attributes: {
-            exclude: ["password"],
-          },
-        },
-        limit,
-      };
 
-      if (page !== "" && typeof page !== "undefined") {
-        // condition.limit = limit;
-        pageNUmber = page;
-        condition.offset = (page - 1) * limit;
-      }
-
-      if (search !== "" && typeof search !== "undefined") {
-        condition.where.name = {
-          [Op.iLike]: `%${search}%`,
-        };
-      }
-
-      if (sort !== "" && typeof sort !== "undefined") {
-        condition.order = [["createdAt", sort]];
-      }
-
-      if (filter !== "" && typeof filter !== "undefined") {
-        let filterArr = filter.category.split(",");
-
-        condition.where.categoryId = {
-          [Op.in]: filterArr,
-        };
-      }
-
-      let { count, rows } = await Product.findAndCountAll(condition);
-      let totalRows = rows.length;
-      res.status(200).json({
-        page: pageNUmber,
-        totalProduct: count,
-        totalPage: Math.ceil(count / limit),
-        productPerPage: totalRows,
-        data: rows,
-      });
-    } catch (error) {
-      // console.log(error);
-      next(error);
-    }
-  }
 
   static async readId(req, res, next) {
     try {
@@ -112,52 +58,6 @@ class productController {
     }
   }
 
-  static async updateProduct(req, res, next) {
-    try {
-      let { id } = req.params;
-      let data = await Product.findByPk(id);
-
-      let { brand,
-        model,
-        kilometer,
-        imageUrl,
-        year,
-        transmission,
-        color,
-        categoryId,
-        description,
-        price,
-        userId } = req.body;
-      let updateProduct = await Product.update(
-        { brand,
-            model,
-            kilometer,
-            imageUrl,
-            year,
-            transmission,
-            color,
-            categoryId,
-            description,
-            price,
-            userId },
-        {
-          where: {
-            id,
-          },
-          returning: true,
-        }
-      );
-
-      if (!data) {
-        throw new Error("NotFound");
-      }
-
-      res.status(200).json({ data, updateProduct: updateProduct[1] });
-    } catch (error) {
-      // console.log(error);
-      next(error);
-    }
-  }
 
   static async deleteProduct(req, res, next) {
     try {
@@ -208,7 +108,7 @@ class productController {
       const cekProduct = await Product.findByPk(id);
       res.status(200).json({
         massage: `${cekProduct.name} succed update image`,
-        result
+        result,
       });
     } catch (error) {
       next(error);
@@ -223,6 +123,48 @@ class productController {
       next(error);
     }
   }
+
+  static async midtrans(req, res, next) {
+    const { price } = req.body;
+    console.log(price);
+    try {
+      // if (!price) throw new Error("bad request");
+      // Create Snap API instance
+
+      let snap = new midtransClient.Snap({
+        // Set to true if you want Production Environment (accept real transaction).
+        isProduction: false,
+        serverKey: "SB-Mid-server-D9B9H27_yZAWwHZ1RG5lQ3Jj",
+      });
+
+      const orderId = `trx-buy-${generateUniqueOrderId()}`;
+
+      let parameter = {
+        transaction_details: {
+          order_id: orderId,
+          gross_amount: price,
+        },
+        credit_card: {
+          secure: true,
+        },
+        // customer_details: {
+        //   username: req.loginInfo.email,
+        // },
+      };
+
+      const { token } = await snap.createTransaction(parameter);
+
+      res.status(200).json({
+        transaction_token: token,
+        orderId,
+      });
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  
 }
 
 module.exports = productController;

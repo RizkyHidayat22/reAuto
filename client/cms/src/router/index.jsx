@@ -6,7 +6,7 @@ import BaseLayout from "../BaseLayout/BaseLayout";
 import HomeBuyer from "../views/HomeBuyer";
 import AddCar from "../views/AddProduct";
 import AddCategory from "../views/AddCategory";
-
+import EditProduct from "../views/EditProduct";
 
 const router = createBrowserRouter([
   {
@@ -29,20 +29,24 @@ const router = createBrowserRouter([
       }
       return null;
     },
-    children : [
-        {
-            path : '/home-buyer',
-            element : <HomeBuyer/>
-        },
-        {
-            path : '/addCar',
-            element : <AddCar/>
-        },
-        {
-            path : '/Add-category',
-            element : <AddCategory/>
-        }
-    ]
+    children: [
+      {
+        path: "/home-buyer",
+        element: <HomeBuyer />,
+      },
+      {
+        path: "/addCar",
+        element: <AddCar />,
+      },
+      {
+        path: "/Add-category",
+        element: <AddCategory />,
+      },
+      {
+        path: "/edit/:id",
+        element: <EditProduct />,
+      },
+    ],
   },
 ]);
 

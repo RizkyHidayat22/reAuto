@@ -23,18 +23,20 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <Link to="/addCar" className="text-white">
-                Add Product
-              </Link>
-            </li>
-            <li>
-              <Link to="/Add-category" className="text-white">
-                Add Category
-              </Link>
-            </li>
-          </ul>
+          {localStorage.role !== `Buyer` && (
+            <ul className="menu menu-horizontal px-1">
+              <li>
+                <Link to="/addCar" className="text-white">
+                  Add Product
+                </Link>
+              </li>
+              <li>
+                <Link to="/Add-category" className="text-white">
+                  Add Category
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
         <div onClick={logout} className="navbar-end flex gap-3">
           <a className="btn  bg-yellow-200">Logout</a>

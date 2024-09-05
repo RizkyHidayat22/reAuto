@@ -55,7 +55,7 @@ afterAll(async () => {
 
 describe("POST /products", () => {
   describe("POST /products - succeed", () => {
-    it("should be return new product an object", async () => {
+    it.only("should be return new product an object", async () => {
       const response = await request(app).post("/products").send(body).set("Authorization", `Bearer ${access_token}`);
 
       expect(response.status).toBe(201);

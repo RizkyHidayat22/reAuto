@@ -1,36 +1,44 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../components/Card";
-export default function HomeBuyer(){
-  const [product, setProduct] = useState([]);
+import {useDispatch, useSelector} from "react-redux"
+import { fetchAsycProduct } from "../features/ProductSilce";
 
-  async function fecthData() {
-    try {
-        const { data } = await axios.get("http://localhost:3000/products/readproduct", {
-            headers: {
-              Authorization: `Bearer ${localStorage.access_token}`,
-            },
-          });
-          console.log(data);
-          setProduct(data.data)
-    } catch (error) {
-        console.log(error);
-    }
-  }
+export default function HomeBuyer() {
+//   const [products, setProducts] = useState([]);
+const dispact = useDispatch()
+const {reviews, loading, error} = useSelector((state) => state.fetchProduct)
+//   async function fetchData() {
+//     try {
+//       const { data } = await axios.get("http://localhost:3000/products/readproduct", {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.access_token}`,
+//         },
+//       });
+//       setProducts(data.data);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
 
-  useEffect(
-    ()=>{
-        fecthData()
-    },[]
-)
-    return(
-        <>
-        <div className="flex flex-wrap gap-4 justify-center">
-        {product.map((el) => {
-            return <Card product={el} key={el.id}/>
+  useEffect(() => {
+    dispact(fetchAsycProduct());
+  }, []);
+
+  const handleProductUpdate = (id) => {
+    setProducts(prevProducts => prevProducts.filter(product => product.id !== id));
+  };
+
+  return (
+    <>
+      <div className="flex flex-wrap gap-4 justify-center">
+        {!error && reviews.map((product) => {
+            return <Card key={product.id} 
+            product={product} 
+            onProductUpdate={handleProductUpdate}/> 
         })}
-       
-    </div>
-        </>
-    )
+         
+      </div>
+    </>
+  );
 }

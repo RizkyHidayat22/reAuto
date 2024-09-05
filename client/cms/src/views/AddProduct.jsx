@@ -23,7 +23,6 @@ export default function AddCar() {
       formData.append("brand", brand);
       formData.append("model", model);
       formData.append("price", price);
-      console.log("ok");
       formData.append("description", description);
       formData.append("year", year);
       formData.append("color", color);
@@ -57,6 +56,9 @@ export default function AddCar() {
     }
   }
 
+  
+
+  
   useEffect(() => {
     handleCategory();
   }, []);
