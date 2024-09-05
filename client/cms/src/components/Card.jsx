@@ -12,7 +12,7 @@ export default function Card({ product, onProductUpdate }) {
   async function handleBuy(price, id) {
     try {
       const { data } = await axios.post(
-        `http://localhost:3000/products/midtrans`,
+        `https://iproject.rizkyhidayat.dev/midtrans`,
         { price },
         {
           headers: {
