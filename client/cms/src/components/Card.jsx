@@ -31,15 +31,16 @@ const navigate = useNavigate()
             });
             onProductUpdate(id);
             // dispact(fetchAsycProduct());
+            navigate('/home-buyer')
             Swal.fire({
                 icon: "success",
                 title: "Product deleted successfully!",
             });
-         
           } catch (deleteError) {
             console.log(error);
           }
         },
+   
         onPending: function () {
           Swal.fire({
             icon: "warning",
