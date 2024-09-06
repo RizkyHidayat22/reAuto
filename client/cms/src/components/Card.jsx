@@ -29,13 +29,13 @@ const navigate = useNavigate()
                 Authorization: `Bearer ${localStorage.access_token}`,
               },
             });
-            // onProductUpdate(id);
+            onProductUpdate(id);
             // dispact(fetchAsycProduct());
             Swal.fire({
                 icon: "success",
                 title: "Product deleted successfully!",
             });
-            navigate(0)
+         
           } catch (deleteError) {
             console.log(error);
           }
