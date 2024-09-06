@@ -4,7 +4,7 @@ import Toastify from "toastify-js";
 
 export default function EditImg() {
   const { id } = useParams();
-  console.log(id);
+//   console.log(id);
   const navigate = useNavigate();
 
   async function fetchEdit(e) {

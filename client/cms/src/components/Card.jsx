@@ -1,18 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { fetchAsycProduct } from "../features/ProductSilce";
 import { useDispatch } from "react-redux";
 
-
 export default function Card({ product, onProductUpdate }) {
-
-    const dispact = useDispatch()
-
+  const dispact = useDispatch();
+const navigate = useNavigate()
   async function handleBuy(price, id) {
     try {
       const { data } = await axios.post(
-        `https://iproject.rizkyhidayat.dev/midtrans`,
+        `https://iproject.rizkyhidayat.dev/products/midtrans`,
         { price },
         {
           headers: {
@@ -21,6 +19,8 @@ export default function Card({ product, onProductUpdate }) {
         }
       );
 
+      //   console.log(data);
+      //
       window.snap.pay(data.transaction_token, {
         onSuccess: async function () {
           try {
@@ -29,17 +29,15 @@ export default function Card({ product, onProductUpdate }) {
                 Authorization: `Bearer ${localStorage.access_token}`,
               },
             });
-            onProductUpdate(id);
-
+            // onProductUpdate(id);
+            // dispact(fetchAsycProduct());
             Swal.fire({
-              icon: "success",
-              title: "Product deleted successfully!",
+                icon: "success",
+                title: "Product deleted successfully!",
             });
+            navigate(0)
           } catch (deleteError) {
-            Swal.fire({
-              icon: "error",
-              title: "Failed to delete the product!",
-            });
+            console.log(error);
           }
         },
         onPending: function () {
@@ -62,23 +60,22 @@ export default function Card({ product, onProductUpdate }) {
         },
       });
     } catch (error) {
+      //   console.log(error);
       Swal.fire({
         icon: "error",
         title: error.response.data.message,
       });
     }
-   
   }
 
   async function handleDelete() {
     try {
-       await axios.delete(`http://localhost:3000/products/${product.id}`, {
+      await axios.delete(`https://iproject.rizkyhidayat.dev/products/${product.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.access_token}`,
         },
       });
-      dispact(fetchAsycProduct())
-
+      dispact(fetchAsycProduct());
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +107,9 @@ export default function Card({ product, onProductUpdate }) {
           <>
             <div className="flex flex-wrap gap-5">
               <div className="card-actions justify-end">
-                <button onClick={(e) => handleDelete(e)} className="btn btn-error">Delete</button>
+                <button onClick={(e) => handleDelete(e)} className="btn btn-error">
+                  Delete
+                </button>
               </div>
               <div className="card-actions justify-end">
                 <Link to={`/edit/${product.id}`} className="btn btn-warning">

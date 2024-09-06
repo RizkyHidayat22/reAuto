@@ -124,13 +124,12 @@ class productController {
 
   static async midtrans(req, res, next) {
     const { price } = req.body;
-    console.log(price);
+    // console.log(price);
     try {
       // if (!price) throw new Error("bad request");
       // Create Snap API instance
 
       let snap = new midtransClient.Snap({
-        // Set to true if you want Production Environment (accept real transaction).
         isProduction: false,
         serverKey: process.env.SERVER_KEY,
       });
