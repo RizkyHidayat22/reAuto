@@ -1,12 +1,17 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import HomePage from "../views/HomePage";
 import Register from "../views/Register";
-import Login from "../views/login";
+
 import BaseLayout from "../BaseLayout/BaseLayout";
 import HomeBuyer from "../views/HomeBuyer";
 import AddCar from "../views/AddProduct";
 import AddCategory from "../views/AddCategory";
 import EditProduct from "../views/EditProduct";
+import Login from "../views/LoginPage";
+
+
+
+
 
 const router = createBrowserRouter([
   {
@@ -19,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Login/>,
   },
   {
     element: <BaseLayout />,
@@ -29,24 +34,24 @@ const router = createBrowserRouter([
       }
       return null;
     },
-    children: [
-      {
-        path: "/home-buyer",
-        element: <HomeBuyer />,
-      },
-      {
-        path: "/addCar",
-        element: <AddCar />,
-      },
-      {
-        path: "/Add-category",
-        element: <AddCategory />,
-      },
-      {
-        path: "/edit/:id",
-        element: <EditProduct />,
-      },
-    ],
+    children : [
+        {
+            path : '/home-buyer',
+            element : <HomeBuyer/>
+        },
+        {
+            path : '/addCar',
+            element : <AddCar/>
+        },
+        {
+            path : '/Add-category',
+            element : <AddCategory/>
+        },
+        {
+          path : "/edit/:id",
+          element : <EditProduct/>
+      }
+    ]
   },
 ]);
 
